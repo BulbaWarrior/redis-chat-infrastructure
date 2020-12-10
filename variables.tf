@@ -15,6 +15,10 @@ variable "keys" {
   type = map
 
   default = {
-    "us-east-2" = "AWS key"
+    "us-east-2" = "MyKey"
   }
+}
+
+variable "network_addr" {
+  default = "10.0.0.0/24"
 }

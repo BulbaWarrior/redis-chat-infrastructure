@@ -1,3 +1,5 @@
+#!/bin/bash
+
 sudo apt update
 
 # download repo from git
@@ -15,12 +17,8 @@ sudo pip3 install -r requirements.txt
 echo "${database_addr} redis" | sudo tee -a /etc/hosts
 echo "${database_addr} postgres" | sudo tee -a /etc/hosts
 	
-# prepare django
+# start django
 sudo python3 manage.py collectstatic --no-input
 sudo python3 manage.py makemigrations
 sudo python3 manage.py migrate --run-syncdb
-
-
-
-# run app
 sudo python3 -u manage.py runserver 0.0.0.0:8000 --noreload

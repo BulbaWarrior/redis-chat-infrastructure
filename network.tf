@@ -28,7 +28,7 @@ resource "aws_default_route_table" "main_route_table" {
 
 resource "aws_subnet" "local_network" {
   vpc_id     = aws_vpc.main.id
-yes  cidr_block = var.network_addr
+  cidr_block = var.network_addr
 }
 
 

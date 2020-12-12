@@ -14,3 +14,5 @@ provider "aws" {
   secret_key = var.secret_key
 }
 
+variable "access_key" {}
+variable "secret_key" {}

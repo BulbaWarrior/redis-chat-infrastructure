@@ -22,3 +22,7 @@ variable "keys" {
 variable "network_addr" {
   default = "10.0.0.0/24"
 }
+
+variable "database_addr" {
+  default = "10.0.0.100"
+}

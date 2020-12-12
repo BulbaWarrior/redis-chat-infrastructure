@@ -9,7 +9,7 @@
 
 sudo curl -sLS get.docker.com | sh
 
-sudo docker run redis -p 6379:6379 --name redis
-sudo docker exec redis redis-server -appendonly yes
+sudo docker run -p 6379:6379 --name redis -d redis
+# sudo docker run -p 6379:6379 --name redis -d redis redis-server --appendonly yes
 
-sudo docker run postgres -p 5432:5432 --env POSTGRES_DB=postgres --env POSTGRES_USER=postgres --env POSTGRES_PASSWORD=postgres
+sudo docker run -p 5432:5432 --name postgres -d --env POSTGRES_DB=postgres --env POSTGRES_USER=postgres --env POSTGRES_PASSWORD=postgres postgres

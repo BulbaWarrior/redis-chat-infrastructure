@@ -1,17 +1,19 @@
+sudo apt update
+
 # download repo from git
-sudo apt install git
-sudo cd /
+sudo apt install git -y
+cd /
 sudo git clone https://github.com/kezzyhko/django-redis-chat.git
-sudo cd /django-redis-chat
+cd /django-redis-chat
 
-
-
-# prepare env for web app
-sudo pip install -r requirements.txt
+# install python
+sudo apt install python3 -y
+sudo apt install python3-pip -y
+sudo pip3 install -r requirements.txt
 
 # configure ip addresses
-echo "${database_addr} redis" > /etc/hosts
-echo "${database_addr} postgres" > /etc/hosts
+echo "${database_addr} redis" | sudo tee -a /etc/hosts
+echo "${database_addr} postgres" | sudo tee -a /etc/hosts
 	
 # prepare django
 sudo python3 manage.py collectstatic --no-input

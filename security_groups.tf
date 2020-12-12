@@ -18,6 +18,9 @@ resource "aws_security_group" "network_sg" {
 }
 
 resource "aws_security_group" "local_sg" {
+
+  vpc_id = aws_vpc.main.id
+  
   ingress {
     from_port = 0
     to_port = 0

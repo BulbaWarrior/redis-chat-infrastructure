@@ -1,4 +1,6 @@
 *~
-#*
+*#
 .terraform*
 secret.auto.tfvars
+terraform.tfstate*
+crash.log

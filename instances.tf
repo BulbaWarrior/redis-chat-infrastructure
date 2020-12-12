@@ -10,6 +10,7 @@ resource "aws_instance" "webapp_host" {
   tags = {
     Name = "web server"
   }
+  depends_on = [aws_instance.database_host]
 }
 
 resource "aws_instance" "database_host" {

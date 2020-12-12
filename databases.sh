@@ -1,12 +1,3 @@
-# # redis
-# sudo apt install redis-server -y
-# sudo redis-server --append-only yes
-
-# # postgres
-# sudo apt install postgresql -y
-
-
-
 sudo curl -sLS get.docker.com | sh
 
 sudo docker run -p 6379:6379 --name redis -d redis

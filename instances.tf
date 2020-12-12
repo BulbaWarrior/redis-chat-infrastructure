@@ -5,5 +5,5 @@ resource "aws_instance" "webapp_host" {
   subnet_id     = aws_subnet.local_network.id
   count         = 2
   associate_public_ip_address = true # for debug purposes
-  security_groups = [aws_security_group.network_sg.id]
+  security_groups = [aws_security_group.local_sg.id]
 }

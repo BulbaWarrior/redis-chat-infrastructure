@@ -1,3 +1,4 @@
 *~
 #*
 .terraform*
+secret.auto.tfvars

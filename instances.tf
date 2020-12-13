@@ -28,14 +28,28 @@ resource "aws_instance" "database_host" {
   }
 }
 
+resource "aws_instance" "loadbalancer_host" {
+  ami                         = var.amis[var.region]
+  instance_type               = "t2.micro"
+  key_name                    = var.keys[var.region]
+  subnet_id                   = aws_subnet.local_network.id
+  associate_public_ip_address = true
+  security_groups             = [aws_security_group.local_sg.id]
+  private_ip                  = local.loadbalancer_addr
+  user_data                   = templatefile("loadbalancer.sh", {web_host_private_ips: aws_instance.webapp_host[*].private_ip})
+  tags = {
+    Name = "load balancer"
+  }
+}
+
 resource "aws_instance" "backup_host" {
-  ami           = var.amisp[var.region]
-  instance_type = "t2.micro"
-  key_name      = var.keys[var.region]
-  subnet_id     = aws_subnet_local_network.id
+  ami                         = var.amisp[var.region]
+  instance_type               = "t2.micro"
+  key_name                    = var.keys[var.region]
+  subnet_id                   = aws_subnet_local_network.id
   associate_public_ip_address = true # for debug purposes
-  security_groups = [aws_security_group.local_sg.id]
-  user_data = templatefile("backup.sh", {database_addr = var.database_addr, web_addr = var.web_addr})
+  security_groups             = [aws_security_group.local_sg.id]
+  user_data                   = templatefile("backup.sh", {database_addr = var.database_addr, web_addr = var.web_addr})
   tags = {
     Name = "backup server"
   }

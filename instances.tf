@@ -34,7 +34,7 @@ resource "aws_instance" "loadbalancer_host" {
   key_name                    = var.keys[var.region]
   subnet_id                   = aws_subnet.local_network.id
   associate_public_ip_address = true
-  vpc_security_group_id             = [aws_security_group.local_sg.id]
+  vpc_security_group_ids             = [aws_security_group.local_sg.id]
   private_ip                  = local.loadbalancer_addr
   user_data                   = templatefile("loadbalancer.sh", {web_host_private_ips: aws_instance.webapp_host[*].private_ip})
   tags = {

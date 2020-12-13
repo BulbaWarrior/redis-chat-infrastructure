@@ -6,7 +6,7 @@ resource "aws_instance" "webapp_host" {
   count                       = 2
   associate_public_ip_address = true # for debug purposes
   security_groups             = [aws_security_group.local_sg.id]
-  private_ip                  = cidrhost(local.web_subnet_addr, count.index)
+  private_ip                  = cidrhost(local.web_subnet_addr, count.index + 1)
   user_data                   = templatefile("web.sh", { database_addr = local.database_addr })
   tags = {
     Name = "web server"

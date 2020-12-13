@@ -43,13 +43,13 @@ resource "aws_instance" "loadbalancer_host" {
 }
 
 resource "aws_instance" "backup_host" {
-  ami                         = var.amisp[var.region]
+  ami                         = var.amis[var.region]
   instance_type               = "t2.micro"
   key_name                    = var.keys[var.region]
   subnet_id                   = aws_subnet.local_network.id
   associate_public_ip_address = true # for debug purposes
   vpc_security_group_ids      = [aws_security_group.local_sg.id]
-  user_data                   = templatefile("backup.sh", { database_addr = var.database_addr })
+  user_data                   = templatefile("backup.sh", { database_addr = local.database_addr })
   tags = {
     Name = "backup server"
   }

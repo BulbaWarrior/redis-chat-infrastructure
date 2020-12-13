@@ -30,5 +30,3 @@ resource "aws_subnet" "local_network" {
   vpc_id     = aws_vpc.main.id
   cidr_block = var.network_addr
 }
-
-

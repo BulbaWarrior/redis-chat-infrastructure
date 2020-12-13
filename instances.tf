@@ -27,3 +27,17 @@ resource "aws_instance" "database_host" {
     Name = "database server"
   }
 }
+
+resource "aws_instance" "loadbalancer_host" {
+  ami                         = var.amis[var.region]
+  instance_type               = "t2.micro"
+  key_name                    = var.keys[var.region]
+  subnet_id                   = aws_subnet.local_network.id
+  associate_public_ip_address = true
+  security_groups             = [aws_security_group.local_sg.id]
+  private_ip                  = local.loadbalancer_addr
+  user_data                   = templatefile("loadbalancer.sh", {web_host_private_ips: aws_instance.webapp_host[*].private_ip})
+  tags = {
+    Name = "load balancer"
+  }
+}

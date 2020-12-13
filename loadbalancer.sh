@@ -67,9 +67,9 @@ frontend http_front
 #---------------------------------------------------------------------
 backend http_back
     balance     roundrobin
-    %{ for i, addr in web_host_private_ips ~}
+%{ for i, addr in web_host_private_ips ~}
     server node${i} ${addr}:80 check
-	%{ endfor ~}
+%{ endfor ~}
 " > /etc/haproxy/haproxy.cfg
 
 cp /usr/lib/systemd/system/haproxy.service /etc/systemd/system/haproxy.service

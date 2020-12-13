@@ -50,13 +50,6 @@ resource "aws_instance" "backup_host" {
   associate_public_ip_address = true # for debug purposes
   vpc_security_group_ids      = [aws_security_group.local_sg.id]
 
-  provisioner "file" {
-    source      = "backups/postfix/main.cf"
-    destination = "/etc/postfix/main/cf"
-  }
-  provisioner "file" {
-  }
-
   user_data = templatefile("backup.sh", { database_addr = local.database_addr })
   tags = {
     Name = "backup server"

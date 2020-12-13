@@ -6,7 +6,7 @@ resource "aws_instance" "webapp_host" {
   count                       = 2
   associate_public_ip_address = true # for debug purposes
   security_groups             = [aws_security_group.local_sg.id]
-  private_ip                  = cidrhost(var.web_subnet_addr, count.index)
+  private_ip                  = cidrhost(local.web_subnet_addr, count.index)
   user_data                   = templatefile("web.sh", { database_addr = var.database_addr })
   tags = {
     Name = "web server"
@@ -21,7 +21,7 @@ resource "aws_instance" "database_host" {
   subnet_id                   = aws_subnet.local_network.id
   associate_public_ip_address = true # for debug purposes
   security_groups             = [aws_security_group.local_sg.id]
-  private_ip                  = var.database_addr
+  private_ip                  = local.database_addr
   user_data                   = file("databases.sh")
   tags = {
     Name = "database server"

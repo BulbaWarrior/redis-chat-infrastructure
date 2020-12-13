@@ -25,14 +25,8 @@ variable "network_addr" {
   default = "10.0.0.0/24"
 }
 
-variable "web_subnet_addr" {
-  default = cidrsubnet(var.network_addr, 1, 0)
-}
-
-variable "other_subnet_addr" {
-  default = cidrsubnet(var.network_addr, 1, 1)
-}
-
-variable "database_addr" {
-  default = cidrhost(var.other_subnet_addr, 1)
+locals {
+  web_subnet_addr = cidrsubnet(var.network_addr, 1, 0)
+  other_subnet_addr = cidrsubnet(local.network_addr, 1, 1)
+  database_addr = cidrhost(local.other_subnet_addr, 1)
 }

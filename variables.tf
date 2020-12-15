@@ -26,8 +26,10 @@ variable "network_addr" {
 }
 
 locals {
-  web_subnet_addr = cidrsubnet(var.network_addr, 5, 1)
+  web_subnet_addr   = cidrsubnet(var.network_addr, 5, 1)
   other_subnet_addr = cidrsubnet(var.network_addr, 1, 1)
-  database_addr = cidrhost(local.other_subnet_addr, 1)
+  database_addr     = cidrhost(local.other_subnet_addr, 1)
   loadbalancer_addr = cidrhost(local.other_subnet_addr, 2)
+  backup_addr       = cidrhost(local.other_subnet_addr, 3)
+  cicd_addr         = cidrhost(local.other_subnet_addr, 4)
 }

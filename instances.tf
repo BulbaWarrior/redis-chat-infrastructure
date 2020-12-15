@@ -14,7 +14,7 @@ resource "aws_instance" "webapp_host" {
   depends_on = [aws_instance.database_host]
 
   provisioner "file" {
-    content     = templatefile("config/backups/bacula/bacula-fd.conf", { addr: cidrhost(local.web_subnet_addr, count.index + 1) })
+    content     = templatefile("configs/backups/bacula/bacula-fd.conf", { addr: cidrhost(local.web_subnet_addr, count.index + 1) })
     destination = "/etc/bacula/bacula-fd.conf"
   }
 }
@@ -33,7 +33,7 @@ resource "aws_instance" "database_host" {
   }
   
   provisioner "file" {
-    content     = templatefile("config/backups/bacula/bacula-fd.conf", { addr: local.database_addr })
+    content     = templatefile("configs/backups/bacula/bacula-fd.conf", { addr: local.database_addr })
     destination = "/etc/bacula/bacula-fd.conf"
   }
 }
@@ -52,7 +52,7 @@ resource "aws_instance" "loadbalancer_host" {
   }
   
   provisioner "file" {
-    content     = templatefile("config/backups/bacula/bacula-fd.conf", { addr: local.loadbalancer_addr })
+    content     = templatefile("configs/backups/bacula/bacula-fd.conf", { addr: local.loadbalancer_addr })
     destination = "/etc/bacula/bacula-fd.conf"
   }
 }
@@ -72,19 +72,19 @@ resource "aws_instance" "backup_host" {
   depends_on = [aws_instance.webapp_host]
 
   provisioner "file" {
-    source      = "config/backups/postfix/main.cf"
+    source      = "configs/backups/postfix/main.cf"
     destination = "/etc/postfix/main.cf"
   }
   provisioner "file" {
-    source      = "config/backups/postfix/master.cf"
+    source      = "configs/backups/postfix/master.cf"
     destination = "/etc/postfix/master.cf"
   }
   provisioner "file" {
-    content     = templatefile("config/backups/bacula/bacula-dir.conf", { backup_addr: local.backup_addr })
+    content     = templatefile("configs/backups/bacula/bacula-dir.conf", { backup_addr: local.backup_addr })
     destination = "/etc/bacula/bacula-dir.conf"
   }
   provisioner "file" {
-    content     = templatefile("config/backups/bacula/bacula-sd.conf", { backup_addr: local.backup_addr })
+    content     = templatefile("configs/backups/bacula/bacula-sd.conf", { backup_addr: local.backup_addr })
     destination = "/etc/bacula/bacula-sd.conf"
   }
 }
@@ -104,7 +104,7 @@ resource "aws_instance" "cicd_host" {
   depends_on = [aws_instance.webapp_host]
   
   provisioner "file" {
-    content     = templatefile("config/backups/bacula/bacula-fd.conf", { addr: local.cicd_addr })
+    content     = templatefile("configs/backups/bacula/bacula-fd.conf", { addr: local.cicd_addr })
     destination = "/etc/bacula/bacula-fd.conf"
   }
 }

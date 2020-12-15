@@ -50,7 +50,7 @@ resource "aws_instance" "backup_host" {
   associate_public_ip_address = true # for debug purposes
   vpc_security_group_ids      = [aws_security_group.local_sg.id]
   private_ip                  = local.backup_addr
-  user_data                   = templatefile("backup.sh", { database_addr = local.database_addr })
+  user_data                   = templatefile("backup.sh", { bacula_database_pass = var.bacula_database_pass })
   tags = {
     Name = "backup server"
   }

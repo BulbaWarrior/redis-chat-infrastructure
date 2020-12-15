@@ -19,6 +19,10 @@ variable "keys" {
   }
 }
 
+variable "bacula_database_pass" {
+  default = "password"
+}
+
 
 
 variable "network_addr" {

@@ -14,3 +14,7 @@ output "loadbalancer_public_ip" {
 output "backup_server_public_ip" {
   value = aws_instance.backup_host.public_ip
 }
+
+output "cicd_public_ip" {
+  value = aws_instance.cicd_host.public_ip
+}

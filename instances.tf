@@ -12,6 +12,11 @@ resource "aws_instance" "webapp_host" {
     Name = "web server"
   }
   depends_on = [aws_instance.database_host]
+
+  provisioner "file" {
+    content     = templatefile("config/backups/bacula/bacula-fd.conf", { addr: cidrhost(local.web_subnet_addr, count.index + 1) })
+    destination = "/etc/bacula/bacula-fd.conf"
+  }
 }
 
 resource "aws_instance" "database_host" {
@@ -26,6 +31,11 @@ resource "aws_instance" "database_host" {
   tags = {
     Name = "database server"
   }
+  
+  provisioner "file" {
+    content     = templatefile("config/backups/bacula/bacula-fd.conf", { addr: local.database_addr })
+    destination = "/etc/bacula/bacula-fd.conf"
+  }
 }
 
 resource "aws_instance" "loadbalancer_host" {
@@ -39,6 +49,11 @@ resource "aws_instance" "loadbalancer_host" {
   user_data                   = templatefile("loadbalancer.sh", { web_host_private_ips : aws_instance.webapp_host[*].private_ip })
   tags = {
     Name = "load balancer"
+  }
+  
+  provisioner "file" {
+    content     = templatefile("config/backups/bacula/bacula-fd.conf", { addr: local.loadbalancer_addr })
+    destination = "/etc/bacula/bacula-fd.conf"
   }
 }
 
@@ -87,4 +102,9 @@ resource "aws_instance" "cicd_host" {
     Name = "cicd server"
   }
   depends_on = [aws_instance.webapp_host]
+  
+  provisioner "file" {
+    content     = templatefile("config/backups/bacula/bacula-fd.conf", { addr: local.cicd_addr })
+    destination = "/etc/bacula/bacula-fd.conf"
+  }
 }

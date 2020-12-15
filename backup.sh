@@ -21,19 +21,11 @@ sudo debconf-set-selections <<< 'bacula-director-sqlite3 bacula-director-sqlite3
 #sudo debconf-set-selections <<< 'bacula-director-sqlite3 bacula-director-sqlite3/password-confirm password ${database_pass}'
 sudo install bacula-server -y
 
-# Configure postfix
-
-sudo wget -P /etc/postfix -O main.cf https://raw.githubusercontent.com/BulbaWarrior/redis-chat-infrastructure/master/backups/postfix/main.cf
-sudo wget -P /etc/postfix -O master.cf https://raw.githubusercontent.com/BulbaWarrior/redis-chat-infrastructure/master/backups/postfix/master.cf
-
 # Configure Bacula Storage
 
 sudo mkdir /backup
 sudo chown -R bacula:bacula /backup
 sudo nano /etc/bacula/bacula-sd.conf
-
-sudo wget -P /etc/bacula -O bacula-sd.conf https://raw.githubusercontent.com/BulbaWarrior/redis-chat-infrastructure/master/backups/bacula/bacula-sd.conf
-sudo wget -P /etc/bacula -O bacula-dir.conf https://raw.githubusercontent.com/BulbaWarrior/redis-chat-infrastructure/master/backups/bacula/bacula-dir.conf
 
 systemctl restart bacula-sd.service
 sudo systemctl restart bacula-dir

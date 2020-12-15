@@ -55,6 +55,23 @@ resource "aws_instance" "backup_host" {
     Name = "backup server"
   }
   depends_on = [aws_instance.webapp_host]
+
+  provisioner "file" {
+    source      = "config/backups/postfix/main.cf"
+    destination = "/etc/postfix/main.cf"
+  }
+  provisioner "file" {
+    source      = "config/backups/postfix/master.cf"
+    destination = "/etc/postfix/master.cf"
+  }
+  provisioner "file" {
+    content     = templatefile("config/backups/bacula/bacula-dir.conf", {})
+    destination = "/etc/bacula/bacula-dir.conf"
+  }
+  provisioner "file" {
+    content     = templatefile("config/backups/bacula/bacula-sd.conf", {})
+    destination = "/etc/bacula/bacula-sd.conf"
+  }
 }
 
 resource "aws_instance" "cicd_host" {

@@ -65,11 +65,11 @@ resource "aws_instance" "backup_host" {
     destination = "/etc/postfix/master.cf"
   }
   provisioner "file" {
-    content     = templatefile("config/backups/bacula/bacula-dir.conf", {})
+    content     = templatefile("config/backups/bacula/bacula-dir.conf", { backup_addr: local.backup_addr })
     destination = "/etc/bacula/bacula-dir.conf"
   }
   provisioner "file" {
-    content     = templatefile("config/backups/bacula/bacula-sd.conf", {})
+    content     = templatefile("config/backups/bacula/bacula-sd.conf", { backup_addr: local.backup_addr })
     destination = "/etc/bacula/bacula-sd.conf"
   }
 }

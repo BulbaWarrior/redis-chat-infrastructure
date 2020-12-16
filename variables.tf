@@ -19,6 +19,10 @@ variable "keys" {
   }
 }
 
+variable "access_key" {}
+variable "secret_key" {}
+variable "ssh_key" {}
+
 variable "bacula_database_pass" {
   default = "password"
 }

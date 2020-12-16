@@ -21,6 +21,13 @@ sudo debconf-set-selections <<< 'bacula-director-sqlite3 bacula-director-sqlite3
 #sudo debconf-set-selections <<< 'bacula-director-sqlite3 bacula-director-sqlite3/password-confirm password ${bacula_database_pass}'
 sudo install bacula-server -y
 
+# Apply configs
+
+sudo mv /tmp/main.cf /etc/postfix/master.cf
+sudo mv /tmp/master.cf /etc/postfix/master.cf
+sudo mv /tmp/bacula-dir.conf /etc/bacula/bacula-dir.conf
+sudo mv /tmp/bacula-sd.conf /etc/bacula/bacula-sd.conf
+
 # Configure Bacula Storage
 
 sudo mkdir /backup

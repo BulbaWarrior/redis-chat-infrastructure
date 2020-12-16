@@ -7,10 +7,6 @@ resource "aws_instance" "webapp_host" {
   associate_public_ip_address = true # for debug purposes
   vpc_security_group_ids      = [aws_security_group.local_sg.id]
   private_ip                  = cidrhost(local.web_subnet_addr, count.index + 1)
-  user_data                   = join("\n", [
-    file("bacula-client.sh"),
-    templatefile("web.sh", { database_addr = local.database_addr, node_id = count.index + 1 }),
-  ])
   tags = {
     Name = "web server"
   }
@@ -26,6 +22,10 @@ resource "aws_instance" "webapp_host" {
     content     = templatefile("configs/backups/bacula/bacula-fd.conf", { addr: self.private_ip })
     destination = "/tmp/bacula-fd.conf"
   }
+  user_data = join("\n", [
+    file("bacula-client.sh"),
+    templatefile("web.sh", { database_addr = local.database_addr, node_id = count.index + 1 }),
+  ])
 }
 
 resource "aws_instance" "database_host" {
@@ -36,7 +36,6 @@ resource "aws_instance" "database_host" {
   associate_public_ip_address = true # for debug purposes
   vpc_security_group_ids      = [aws_security_group.local_sg.id]
   private_ip                  = local.database_addr
-  user_data                   = file("databases.sh")
   tags = {
     Name = "database server"
   }
@@ -51,6 +50,10 @@ resource "aws_instance" "database_host" {
     content     = templatefile("configs/backups/bacula/bacula-fd.conf", { addr: self.private_ip })
     destination = "/tmp/bacula-fd.conf"
   }
+  user_data = join("\n", [
+    file("bacula-client.sh"),
+    file("databases.sh"),
+  ])
 }
 
 resource "aws_instance" "loadbalancer_host" {
@@ -61,7 +64,6 @@ resource "aws_instance" "loadbalancer_host" {
   associate_public_ip_address = true
   vpc_security_group_ids      = [aws_security_group.local_sg.id]
   private_ip                  = local.loadbalancer_addr
-  user_data                   = templatefile("loadbalancer.sh", { web_host_private_ips : aws_instance.webapp_host[*].private_ip })
   tags = {
     Name = "load balancer"
   }
@@ -76,6 +78,10 @@ resource "aws_instance" "loadbalancer_host" {
     content     = templatefile("configs/backups/bacula/bacula-fd.conf", { addr: self.private_ip })
     destination = "/tmp/bacula-fd.conf"
   }
+  user_data = join("\n", [
+    file("bacula-client.sh"),
+    templatefile("loadbalancer.sh", { web_host_private_ips : aws_instance.webapp_host[*].private_ip }),
+  ])
 }
 
 resource "aws_instance" "backup_host" {
@@ -86,7 +92,6 @@ resource "aws_instance" "backup_host" {
   associate_public_ip_address = true # for debug purposes
   vpc_security_group_ids      = [aws_security_group.local_sg.id]
   private_ip                  = local.backup_addr
-  user_data                   = templatefile("backup.sh", { bacula_database_pass = var.bacula_database_pass })
   tags = {
     Name = "backup server"
   }
@@ -114,6 +119,7 @@ resource "aws_instance" "backup_host" {
     content     = templatefile("configs/backups/bacula/bacula-sd.conf", { addr: self.private_ip })
     destination = "/tmp/bacula-sd.conf"
   }
+  user_data = templatefile("backup.sh", { bacula_database_pass = var.bacula_database_pass })
 }
 
 resource "aws_instance" "cicd_host" {
@@ -124,7 +130,6 @@ resource "aws_instance" "cicd_host" {
   associate_public_ip_address = true # for debug purposes
   vpc_security_group_ids      = [aws_security_group.local_sg.id]
   private_ip                  = local.cicd_addr
-  user_data                   = templatefile("cicd.sh", {})
   tags = {
     Name = "cicd server"
   }
@@ -140,4 +145,8 @@ resource "aws_instance" "cicd_host" {
     content     = templatefile("configs/backups/bacula/bacula-fd.conf", { addr: self.private_ip })
     destination = "/tmp/bacula-fd.conf"
   }
+  user_data = join("\n", [
+    file("bacula-client.sh"),
+    file("cicd.sh"),
+  ])
 }

@@ -20,7 +20,7 @@ resource "aws_instance" "webapp_host" {
     host = self.public_ip
   }
   provisioner "file" {
-    content     = templatefile("configs/backups/bacula/bacula-fd.conf", { addr: cidrhost(local.web_subnet_addr, count.index + 1) })
+    content     = templatefile("configs/backups/bacula/bacula-fd.conf", { addr: self.private_ip })
     destination = "~/bacula-fd.conf"
   }
 }
@@ -45,7 +45,7 @@ resource "aws_instance" "database_host" {
     host = self.public_ip
   }
   provisioner "file" {
-    content     = templatefile("configs/backups/bacula/bacula-fd.conf", { addr: local.database_addr })
+    content     = templatefile("configs/backups/bacula/bacula-fd.conf", { addr: self.private_ip })
     destination = "~/bacula-fd.conf"
   }
 }
@@ -70,7 +70,7 @@ resource "aws_instance" "loadbalancer_host" {
     host = self.public_ip
   }
   provisioner "file" {
-    content     = templatefile("configs/backups/bacula/bacula-fd.conf", { addr: local.loadbalancer_addr })
+    content     = templatefile("configs/backups/bacula/bacula-fd.conf", { addr: self.private_ip })
     destination = "~/bacula-fd.conf"
   }
 }
@@ -104,11 +104,11 @@ resource "aws_instance" "backup_host" {
     destination = "~/master.cf"
   }
   provisioner "file" {
-    content     = templatefile("configs/backups/bacula/bacula-dir.conf", { backup_addr: local.backup_addr })
+    content     = templatefile("configs/backups/bacula/bacula-dir.conf", { addr: self.private_ip })
     destination = "~/bacula-dir.conf"
   }
   provisioner "file" {
-    content     = templatefile("configs/backups/bacula/bacula-sd.conf", { backup_addr: local.backup_addr })
+    content     = templatefile("configs/backups/bacula/bacula-sd.conf", { addr: self.private_ip })
     destination = "~/bacula-sd.conf"
   }
 }
@@ -134,7 +134,7 @@ resource "aws_instance" "cicd_host" {
     host = self.public_ip
   }
   provisioner "file" {
-    content     = templatefile("configs/backups/bacula/bacula-fd.conf", { addr: local.cicd_addr })
+    content     = templatefile("configs/backups/bacula/bacula-fd.conf", { addr: self.private_ip })
     destination = "~/bacula-fd.conf"
   }
 }

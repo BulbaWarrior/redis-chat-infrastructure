@@ -14,10 +14,10 @@ resource "aws_instance" "webapp_host" {
   depends_on = [aws_instance.database_host]
 
   connection {
-    type = "ssh"
-    user = var.ssh_username
+    type        = "ssh"
+    user        = var.ssh_username
     private_key = var.ssh_key
-    host = self.public_ip
+    host        = self.public_ip
   }
   provisioner "file" {
     content     = templatefile("configs/backups/bacula/bacula-fd.conf", { addr: self.private_ip })
@@ -39,10 +39,10 @@ resource "aws_instance" "database_host" {
   }
   
   connection {
-    type = "ssh"
-    user = var.ssh_username
+    type        = "ssh"
+    user        = var.ssh_username
     private_key = var.ssh_key
-    host = self.public_ip
+    host        = self.public_ip
   }
   provisioner "file" {
     content     = templatefile("configs/backups/bacula/bacula-fd.conf", { addr: self.private_ip })
@@ -64,10 +64,10 @@ resource "aws_instance" "loadbalancer_host" {
   }
   
   connection {
-    type = "ssh"
-    user = var.ssh_username
+    type        = "ssh"
+    user        = var.ssh_username
     private_key = var.ssh_key
-    host = self.public_ip
+    host        = self.public_ip
   }
   provisioner "file" {
     content     = templatefile("configs/backups/bacula/bacula-fd.conf", { addr: self.private_ip })
@@ -90,10 +90,10 @@ resource "aws_instance" "backup_host" {
   depends_on = [aws_instance.webapp_host]
 
   connection {
-    type = "ssh"
-    user = var.ssh_username
+    type        = "ssh"
+    user        = var.ssh_username
     private_key = var.ssh_key
-    host = self.public_ip
+    host        = self.public_ip
   }
   provisioner "file" {
     source      = "configs/backups/postfix/main.cf"
@@ -128,10 +128,10 @@ resource "aws_instance" "cicd_host" {
   depends_on = [aws_instance.webapp_host]
   
   connection {
-    type = "ssh"
-    user = var.ssh_username
+    type        = "ssh"
+    user        = var.ssh_username
     private_key = var.ssh_key
-    host = self.public_ip
+    host        = self.public_ip
   }
   provisioner "file" {
     content     = templatefile("configs/backups/bacula/bacula-fd.conf", { addr: self.private_ip })

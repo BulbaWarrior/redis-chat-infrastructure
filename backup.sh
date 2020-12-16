@@ -23,7 +23,7 @@ sudo install bacula-server -y
 
 # Apply configs
 
-sudo mv /tmp/main.cf /etc/postfix/master.cf
+sudo mv /tmp/main.cf /etc/postfix/main.cf
 sudo mv /tmp/master.cf /etc/postfix/master.cf
 sudo mv /tmp/bacula-dir.conf /etc/bacula/bacula-dir.conf
 sudo mv /tmp/bacula-sd.conf /etc/bacula/bacula-sd.conf

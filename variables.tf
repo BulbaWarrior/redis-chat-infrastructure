@@ -21,6 +21,10 @@ variable "keys" {
 
 variable "access_key" {}
 variable "secret_key" {}
+
+variable "ssh_username" {
+  default = "ubuntu"
+}
 variable "ssh_key" {}
 
 variable "bacula_database_pass" {

@@ -15,7 +15,7 @@ resource "aws_instance" "webapp_host" {
 
   connection {
     type = "ssh"
-    user = "ubuntu"
+    user = var.ssh_username
     private_key = var.ssh_key
     host = self.public_ip
   }
@@ -40,7 +40,7 @@ resource "aws_instance" "database_host" {
   
   connection {
     type = "ssh"
-    user = "ubuntu"
+    user = var.ssh_username
     private_key = var.ssh_key
     host = self.public_ip
   }
@@ -65,7 +65,7 @@ resource "aws_instance" "loadbalancer_host" {
   
   connection {
     type = "ssh"
-    user = "ubuntu"
+    user = var.ssh_username
     private_key = var.ssh_key
     host = self.public_ip
   }
@@ -91,7 +91,7 @@ resource "aws_instance" "backup_host" {
 
   connection {
     type = "ssh"
-    user = "ubuntu"
+    user = var.ssh_username
     private_key = var.ssh_key
     host = self.public_ip
   }
@@ -129,7 +129,7 @@ resource "aws_instance" "cicd_host" {
   
   connection {
     type = "ssh"
-    user = "ubuntu"
+    user = var.ssh_username
     private_key = var.ssh_key
     host = self.public_ip
   }

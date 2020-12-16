@@ -112,7 +112,12 @@ resource "aws_instance" "backup_host" {
     destination = "/tmp/master.cf"
   }
   provisioner "file" {
-    content     = templatefile("configs/backups/bacula/bacula-dir.conf", { addr: self.private_ip })
+    content     = templatefile("configs/backups/bacula/bacula-dir.conf", { 
+                                                                            my_addr: self.private_ip,
+                                                                            web_host_private_ips: aws_instance.webapp_host[*].private_ip,
+                                                                            loadbalancer_private_ip: aws_instance.loadbalancer_host.private_ip,
+                                                                            database_private_ip: aws_instance.database_host.private_ip,
+                                                                            cicd_private_ip: aws_instance.cicd_host.private_ip})
     destination = "/tmp/bacula-dir.conf"
   }
   provisioner "file" {

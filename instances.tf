@@ -8,7 +8,7 @@ resource "aws_instance" "webapp_host" {
   vpc_security_group_ids      = [aws_security_group.local_sg.id]
   private_ip                  = cidrhost(local.web_subnet_addr, count.index + 1)
   user_data                   = join("\n", [
-    templatefile("bacula-client.sh", { user: var.ssh_username }),
+    file("bacula-client.sh"),
     templatefile("web.sh", { database_addr = local.database_addr, node_id = count.index + 1 }),
   ])
   tags = {
@@ -24,7 +24,7 @@ resource "aws_instance" "webapp_host" {
   }
   provisioner "file" {
     content     = templatefile("configs/backups/bacula/bacula-fd.conf", { addr: self.private_ip })
-    destination = "~/bacula-fd.conf"
+    destination = "/tmp/bacula-fd.conf"
   }
 }
 
@@ -49,7 +49,7 @@ resource "aws_instance" "database_host" {
   }
   provisioner "file" {
     content     = templatefile("configs/backups/bacula/bacula-fd.conf", { addr: self.private_ip })
-    destination = "~/bacula-fd.conf"
+    destination = "/tmp/bacula-fd.conf"
   }
 }
 
@@ -74,7 +74,7 @@ resource "aws_instance" "loadbalancer_host" {
   }
   provisioner "file" {
     content     = templatefile("configs/backups/bacula/bacula-fd.conf", { addr: self.private_ip })
-    destination = "~/bacula-fd.conf"
+    destination = "/tmp/bacula-fd.conf"
   }
 }
 
@@ -100,19 +100,19 @@ resource "aws_instance" "backup_host" {
   }
   provisioner "file" {
     source      = "configs/backups/postfix/main.cf"
-    destination = "~/main.cf"
+    destination = "/tmp/main.cf"
   }
   provisioner "file" {
     source      = "configs/backups/postfix/master.cf"
-    destination = "~/master.cf"
+    destination = "/tmp/master.cf"
   }
   provisioner "file" {
     content     = templatefile("configs/backups/bacula/bacula-dir.conf", { addr: self.private_ip })
-    destination = "~/bacula-dir.conf"
+    destination = "/tmp/bacula-dir.conf"
   }
   provisioner "file" {
     content     = templatefile("configs/backups/bacula/bacula-sd.conf", { addr: self.private_ip })
-    destination = "~/bacula-sd.conf"
+    destination = "/tmp/bacula-sd.conf"
   }
 }
 
@@ -138,6 +138,6 @@ resource "aws_instance" "cicd_host" {
   }
   provisioner "file" {
     content     = templatefile("configs/backups/bacula/bacula-fd.conf", { addr: self.private_ip })
-    destination = "~/bacula-fd.conf"
+    destination = "/tmp/bacula-fd.conf"
   }
 }

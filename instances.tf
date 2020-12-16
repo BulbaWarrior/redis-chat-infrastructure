@@ -13,6 +13,12 @@ resource "aws_instance" "webapp_host" {
   }
   depends_on = [aws_instance.database_host]
 
+  connection {
+    type = "ssh"
+    user = "ubuntu"
+    private_key = var.ssh_key
+    host = self.public_ip
+  }
   provisioner "file" {
     content     = templatefile("configs/backups/bacula/bacula-fd.conf", { addr: cidrhost(local.web_subnet_addr, count.index + 1) })
     destination = "/etc/bacula/bacula-fd.conf"
@@ -32,6 +38,12 @@ resource "aws_instance" "database_host" {
     Name = "database server"
   }
   
+  connection {
+    type = "ssh"
+    user = "ubuntu"
+    private_key = var.ssh_key
+    host = self.public_ip
+  }
   provisioner "file" {
     content     = templatefile("configs/backups/bacula/bacula-fd.conf", { addr: local.database_addr })
     destination = "/etc/bacula/bacula-fd.conf"
@@ -51,6 +63,12 @@ resource "aws_instance" "loadbalancer_host" {
     Name = "load balancer"
   }
   
+  connection {
+    type = "ssh"
+    user = "ubuntu"
+    private_key = var.ssh_key
+    host = self.public_ip
+  }
   provisioner "file" {
     content     = templatefile("configs/backups/bacula/bacula-fd.conf", { addr: local.loadbalancer_addr })
     destination = "/etc/bacula/bacula-fd.conf"
@@ -71,6 +89,12 @@ resource "aws_instance" "backup_host" {
   }
   depends_on = [aws_instance.webapp_host]
 
+  connection {
+    type = "ssh"
+    user = "ubuntu"
+    private_key = var.ssh_key
+    host = self.public_ip
+  }
   provisioner "file" {
     source      = "configs/backups/postfix/main.cf"
     destination = "/etc/postfix/main.cf"
@@ -103,6 +127,12 @@ resource "aws_instance" "cicd_host" {
   }
   depends_on = [aws_instance.webapp_host]
   
+  connection {
+    type = "ssh"
+    user = "ubuntu"
+    private_key = var.ssh_key
+    host = self.public_ip
+  }
   provisioner "file" {
     content     = templatefile("configs/backups/bacula/bacula-fd.conf", { addr: local.cicd_addr })
     destination = "/etc/bacula/bacula-fd.conf"

@@ -7,9 +7,9 @@ sudo apt install debconf-utils -y
 
 # Install database
 
-sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password password ${bacula_database_pass}'
-sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password ${bacula_database_pass}'
-sudo apt install mysql-server -y
+# sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password password ${bacula_database_pass}'
+# sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password ${bacula_database_pass}'
+# sudo apt install mysql-server -y
 
 # Install bacula
 

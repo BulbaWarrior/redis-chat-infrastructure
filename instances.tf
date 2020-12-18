@@ -113,6 +113,7 @@ resource "aws_instance" "backup_host" {
   }
   provisioner "file" {
     content     = templatefile("configs/backups/bacula/bacula-dir.conf", { 
+                                                                            database_pass: var.bacula_database_pass,
                                                                             my_addr: self.private_ip,
                                                                             web_host_private_ips: aws_instance.webapp_host[*].private_ip,
                                                                             loadbalancer_private_ip: aws_instance.loadbalancer_host.private_ip,

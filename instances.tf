@@ -155,10 +155,6 @@ resource "aws_instance" "cicd_host" {
     content     = templatefile("configs/backups/bacula/bacula-fd.conf", { addr: self.private_ip, name: "cicd-fd" })
     destination = "/tmp/bacula-fd.conf"
   }
-  provisioner "file" {
-    content = file("jenkins_home.zip")
-    destination = "/tmp/jenkins_home.zip"
-  }
   user_data = join("\n", [
     file("bacula-client.sh"),
     file("cicd.sh"),

@@ -112,6 +112,10 @@ resource "aws_instance" "backup_host" {
     destination = "/tmp/master.cf"
   }
   provisioner "file" {
+    content     = templatefile("configs/backups/bacula/bconsole.conf", { addr: self.private_ip })
+    destination = "/tmp/bconsole.conf"
+  }
+  provisioner "file" {
     content     = templatefile("configs/backups/bacula/bacula-dir.conf", { 
                                                                             database_pass: var.bacula_database_pass,
                                                                             my_addr: self.private_ip,

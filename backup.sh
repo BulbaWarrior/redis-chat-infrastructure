@@ -30,6 +30,7 @@ sudo debconf-set-selections <<< 'bacula-director-sqlite3 bacula-director-sqlite3
 #sudo debconf-set-selections <<< 'dbconfig-common dbconfig-common/pgsql/admin-pass password ${bacula_database_pass}'
 #sudo debconf-set-selections <<< 'bacula-director-sqlite3 bacula-director-sqlite3/password-confirm password ${bacula_database_pass}'
 sudo apt install bacula-server -y
+sudo apt install bacula-console -y
 
 # Apply configs
 
@@ -37,6 +38,7 @@ sudo mv /tmp/main.cf /etc/postfix/main.cf
 sudo mv /tmp/master.cf /etc/postfix/master.cf
 sudo mv /tmp/bacula-dir.conf /etc/bacula/bacula-dir.conf
 sudo mv /tmp/bacula-sd.conf /etc/bacula/bacula-sd.conf
+sudo mv /tmp/bconsole.conf /etc/bacula/bconsole.conf
 
 # Configure Bacula Storage
 

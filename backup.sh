@@ -7,25 +7,16 @@ sudo apt install debconf-utils -y
 
 # Install database
 
-# sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password password ${bacula_database_pass}'
-# sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password ${bacula_database_pass}'
-# sudo apt install mysql-server -y
+sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password password ${bacula_database_pass}'
+sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password ${bacula_database_pass}'
+sudo apt install mysql-server -y
+sudo apt install bacula-director-mysql -y
 
 # Install bacula
 
 sudo debconf-set-selections <<< 'postfix postfix/main_mailer_type select Local only'
 sudo debconf-set-selections <<< 'postfix postfix/mailname string backup'
 sudo debconf-set-selections <<< 'bacula-director-sqlite3 bacula-director-sqlite3/dbconfig-install boolean true'
-sudo debconf-set-selections <<< 'bacula-director-pgsql bacula-director-pgsql/remote/host select localhost'
-sudo debconf-set-selections <<< 'bacula-director-pgsql bacula-director-pgsql/pgsql/admin-pass password ${bacula_database_pass}'
-sudo debconf-set-selections <<< 'bacula-director-pgsql bacula-director-pgsql/password-confirm password ${bacula_database_pass}'
-sudo debconf-set-selections <<< 'bacula-director-pgsql bacula-director-pgsql/pgsql/app-pass password ${bacula_database_pass}'
-sudo debconf-set-selections <<< 'bacula-director-pgsql bacula-director-pgsql/app-password-confirm password ${bacula_database_pass}'
-sudo debconf-set-selections <<< 'dbconfig-common dbconfig-common/password-confirm password ${bacula_database_pass}'
-sudo debconf-set-selections <<< 'dbconfig-common dbconfig-common/app-password-confirm password ${bacula_database_pass}'
-sudo debconf-set-selections <<< 'dbconfig-common dbconfig-common/pgsql/app-pass password ${bacula_database_pass}'
-sudo debconf-set-selections <<< 'dbconfig-common dbconfig-common/pgsql/admin-pass password ${bacula_database_pass}'
-sudo debconf-set-selections <<< 'bacula-director-pgsql bacula-director-pgsql/dbconfig-install boolean true'
 #sudo debconf-set-selections <<< 'dbconfig-common dbconfig-common/pgsql/admin-pass password ${bacula_database_pass}'
 #sudo debconf-set-selections <<< 'bacula-director-sqlite3 bacula-director-sqlite3/password-confirm password ${bacula_database_pass}'
 sudo apt install bacula-server -y

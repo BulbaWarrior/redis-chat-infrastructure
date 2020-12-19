@@ -13,6 +13,12 @@ sudo apt install mysql-server -y
 
 # Install bacula-director-mysql
 
+sudo debconf-set-selections <<< 'dbconfig-common dbconfig-common/mysql/admin-pass password ${bacula_database_pass}'
+sudo debconf-set-selections <<< 'bacula-director-mysql bacula-director-mysql/mysql/admin-pass password ${bacula_database_pass}'
+sudo debconf-set-selections <<< 'bacula-director-mysql bacula-director-mysql/password-confirm password ${bacula_database_pass}'
+sudo debconf-set-selections <<< 'dbconfig-common dbconfig-common/mysql/app-pass password ${bacula_database_pass}'
+sudo debconf-set-selections <<< 'bacula-director-mysql bacula-director-mysql/mysql/app-pass password ${bacula_database_pass}'
+sudo debconf-set-selections <<< 'bacula-director-mysql bacula-director-mysql/app-password-confirm password ${bacula_database_pass}'
 sudo debconf-set-selections <<< 'bacula-director-mysql bacula-director-mysql/dbconfig-install boolean true'
 sudo apt install bacula-director-mysql -y
 

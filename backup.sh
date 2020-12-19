@@ -22,6 +22,10 @@ sudo debconf-set-selections <<< 'bacula-director-pgsql bacula-director-pgsql/pgs
 sudo debconf-set-selections <<< 'bacula-director-pgsql bacula-director-pgsql/password-confirm password ${bacula_database_pass}'
 sudo debconf-set-selections <<< 'bacula-director-pgsql bacula-director-pgsql/pgsql/app-pass password ${bacula_database_pass}'
 sudo debconf-set-selections <<< 'bacula-director-pgsql bacula-director-pgsql/app-password-confirm password ${bacula_database_pass}'
+sudo debconf-set-selections <<< 'dbconfig-common dbconfig-common/password-confirm password ${bacula_database_pass}'
+sudo debconf-set-selections <<< 'dbconfig-common dbconfig-common/app-password-confirm password ${bacula_database_pass}'
+sudo debconf-set-selections <<< 'dbconfig-common dbconfig-common/pgsql/app-pass password ${bacula_database_pass}'
+sudo debconf-set-selections <<< 'dbconfig-common dbconfig-common/pgsql/admin-pass password ${bacula_database_pass}'
 #sudo debconf-set-selections <<< 'dbconfig-common dbconfig-common/pgsql/admin-pass password ${bacula_database_pass}'
 #sudo debconf-set-selections <<< 'bacula-director-sqlite3 bacula-director-sqlite3/password-confirm password ${bacula_database_pass}'
 sudo apt install bacula-server -y

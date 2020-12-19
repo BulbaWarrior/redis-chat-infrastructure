@@ -42,8 +42,8 @@ sudo mv /tmp/bconsole.conf /etc/bacula/bconsole.conf
 
 # Configure Bacula Storage
 
-sudo mkdir /backup
-sudo chown -R bacula:bacula /backup
+sudo mkdir /opt/backup
+sudo chown -R bacula:bacula /opt/backup
 
 sudo systemctl restart bacula-sd.service
 sudo systemctl restart bacula-dir

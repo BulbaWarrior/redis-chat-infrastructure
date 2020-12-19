@@ -28,7 +28,7 @@ variable "ssh_username" {
 variable "ssh_key" {}
 
 variable "bacula_database_pass" {
-  default = "password"
+  default = "qwerasdf"
 }
 
 

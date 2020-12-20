@@ -19,7 +19,8 @@ sudo docker run \
      --volume /jenkins_home:/var/jenkins_home \
      --publish 2376:2376 \
      docker:dind
-       
+
+
 sudo docker run --name jenkins-blueocean \
      --rm -d \
      --network jenkins \

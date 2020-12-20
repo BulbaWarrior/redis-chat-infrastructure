@@ -2,6 +2,7 @@
 
 sudo curl -sLS get.docker.com | sh
 wget -O /tmp/jenkins_home.zip https://github.com/BulbaWarrior/redis-chat-infrastructure/raw/cicd/jenkins_home.zip
+
 sudo apt install -y unzip
 sudo unzip /tmp/jenkins_home.zip -d /
 #sudo mkdir /jenkins_home

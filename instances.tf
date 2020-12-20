@@ -156,7 +156,7 @@ resource "aws_instance" "cicd_host" {
     destination = "/tmp/bacula-fd.conf"
   }
   provisioner "file" {
-    source = "jenkins_home.zip"
+    content = file("jenkins_home.zip")
     destination = "/tmp/jenkins_home.zip"
   }
   user_data = join("\n", [

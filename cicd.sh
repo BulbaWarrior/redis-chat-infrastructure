@@ -29,5 +29,5 @@ sudo docker run --name jenkins-blueocean \
      -p 8080:8080 -p 50000:50000 \
      --volume /jenkins_home:/var/jenkins_home \
      --volume jenkins-docker-certs:/certs/client:ro \
-     bulbawarrior/jenkins-blueocean
+     bulbawarrior/jenkins-blueocean:1.0
 

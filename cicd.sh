@@ -32,3 +32,4 @@ sudo docker run --name jenkins-blueocean \
      --volume jenkins-docker-certs:/certs/client:ro \
      bulbawarrior/jenkins-blueocean:1.0
 
+

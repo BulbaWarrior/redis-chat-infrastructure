@@ -156,7 +156,10 @@ resource "aws_instance" "cicd_host" {
     content     = templatefile("configs/backups/bacula/bacula-fd.conf", { addr : self.private_ip, name : "cicd-fd" })
     destination = "/tmp/bacula-fd.conf"
   }
-
+  provisioner "file" {
+    content     = var.ssh_key
+    destination = "/tmp/key.ssh"
+  }
   user_data = join("\n", [
     file("bacula-client.sh"),
     file("cicd.sh"),

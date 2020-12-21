@@ -6,7 +6,7 @@ wget -O /tmp/jenkins_home.zip https://github.com/BulbaWarrior/redis-chat-infrast
 sudo apt install -y unzip
 sudo unzip /tmp/jenkins_home.zip -d /
 #sudo mkdir /jenkins_home
-sudo chown 1000 /jenkins_home
+sudo chown -R 1000 /jenkins_home
 
 sudo docker network create jenkins
 sudo docker run \

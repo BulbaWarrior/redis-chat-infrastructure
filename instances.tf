@@ -19,7 +19,7 @@ resource "aws_instance" "webapp_host" {
     host        = self.public_ip
   }
   provisioner "file" {
-    content     = templatefile("configs/backups/bacula/bacula-fd.conf", { addr: self.private_ip, name: "web-${count.index}-fd" })
+    content     = templatefile("configs/backups/bacula/bacula-fd.conf", { addr : self.private_ip, name : "web-${count.index}-fd" })
     destination = "/tmp/bacula-fd.conf"
   }
   user_data = join("\n", [
@@ -39,7 +39,7 @@ resource "aws_instance" "database_host" {
   tags = {
     Name = "database server"
   }
-  
+
   connection {
     type        = "ssh"
     user        = var.ssh_username
@@ -47,7 +47,7 @@ resource "aws_instance" "database_host" {
     host        = self.public_ip
   }
   provisioner "file" {
-    content     = templatefile("configs/backups/bacula/bacula-fd.conf", { addr: self.private_ip, name: "database-fd" })
+    content     = templatefile("configs/backups/bacula/bacula-fd.conf", { addr : self.private_ip, name : "database-fd" })
     destination = "/tmp/bacula-fd.conf"
   }
   user_data = join("\n", [
@@ -67,7 +67,8 @@ resource "aws_instance" "loadbalancer_host" {
   tags = {
     Name = "load balancer"
   }
-  
+  depends_on = [aws_instance.webapp_host]
+
   connection {
     type        = "ssh"
     user        = var.ssh_username
@@ -75,7 +76,7 @@ resource "aws_instance" "loadbalancer_host" {
     host        = self.public_ip
   }
   provisioner "file" {
-    content     = templatefile("configs/backups/bacula/bacula-fd.conf", { addr: self.private_ip, name: "loadbalancer-fd" })
+    content     = templatefile("configs/backups/bacula/bacula-fd.conf", { addr : self.private_ip, name : "loadbalancer-fd" })
     destination = "/tmp/bacula-fd.conf"
   }
   user_data = join("\n", [
@@ -112,21 +113,21 @@ resource "aws_instance" "backup_host" {
     destination = "/tmp/master.cf"
   }
   provisioner "file" {
-    content     = templatefile("configs/backups/bacula/bconsole.conf", { addr: self.private_ip })
+    content     = templatefile("configs/backups/bacula/bconsole.conf", { addr : self.private_ip })
     destination = "/tmp/bconsole.conf"
   }
   provisioner "file" {
-    content     = templatefile("configs/backups/bacula/bacula-dir.conf", { 
-                                                                            database_pass: var.bacula_database_pass,
-                                                                            my_addr: self.private_ip,
-                                                                            web_host_private_ips: aws_instance.webapp_host[*].private_ip,
-                                                                            loadbalancer_private_ip: aws_instance.loadbalancer_host.private_ip,
-                                                                            database_private_ip: aws_instance.database_host.private_ip,
-                                                                            cicd_private_ip: aws_instance.cicd_host.private_ip})
+    content = templatefile("configs/backups/bacula/bacula-dir.conf", {
+      database_pass : var.bacula_database_pass,
+      my_addr : self.private_ip,
+      web_host_private_ips : aws_instance.webapp_host[*].private_ip,
+      loadbalancer_private_ip : aws_instance.loadbalancer_host.private_ip,
+      database_private_ip : aws_instance.database_host.private_ip,
+    cicd_private_ip : aws_instance.cicd_host.private_ip })
     destination = "/tmp/bacula-dir.conf"
   }
   provisioner "file" {
-    content     = templatefile("configs/backups/bacula/bacula-sd.conf", { addr: self.private_ip })
+    content     = templatefile("configs/backups/bacula/bacula-sd.conf", { addr : self.private_ip })
     destination = "/tmp/bacula-sd.conf"
   }
   user_data = templatefile("backup.sh", { bacula_database_pass = var.bacula_database_pass })
@@ -144,7 +145,7 @@ resource "aws_instance" "cicd_host" {
     Name = "cicd server"
   }
   depends_on = [aws_instance.webapp_host]
-  
+
   connection {
     type        = "ssh"
     user        = var.ssh_username
@@ -152,7 +153,7 @@ resource "aws_instance" "cicd_host" {
     host        = self.public_ip
   }
   provisioner "file" {
-    content     = templatefile("configs/backups/bacula/bacula-fd.conf", { addr: self.private_ip, name: "cicd-fd" })
+    content     = templatefile("configs/backups/bacula/bacula-fd.conf", { addr : self.private_ip, name : "cicd-fd" })
     destination = "/tmp/bacula-fd.conf"
   }
   user_data = join("\n", [

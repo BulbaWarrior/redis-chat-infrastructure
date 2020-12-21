@@ -7,3 +7,4 @@ sudo mkdir /jenkins_home
 sudo chown 1000 /jenkins_home
 sudo docker run -p 80:8080 -v /jenkins_home:/var/jenkins_home -v /var/run/docker.sock:/var/run/docker.sock gustavoapolinario/jenkins-docker
 
+

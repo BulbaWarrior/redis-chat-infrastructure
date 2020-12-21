@@ -67,6 +67,7 @@ resource "aws_instance" "loadbalancer_host" {
   tags = {
     Name = "load balancer"
   }
+  depends_on = [aws_instance.webapp_host]
 
   connection {
     type        = "ssh"

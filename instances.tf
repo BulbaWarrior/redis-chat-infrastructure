@@ -3,7 +3,7 @@ resource "aws_instance" "webapp_host" {
   instance_type               = "t2.micro"
   key_name                    = var.keys[var.region]
   subnet_id                   = aws_subnet.local_network.id
-  count                       = 2
+  count                       = 3
   associate_public_ip_address = true # for debug purposes
   vpc_security_group_ids      = [aws_security_group.local_sg.id]
   private_ip                  = cidrhost(local.web_subnet_addr, count.index + 1)

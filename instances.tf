@@ -79,9 +79,13 @@ resource "aws_instance" "loadbalancer_host" {
     content     = templatefile("configs/bacula/bacula-fd.conf", { addr : self.private_ip, name : "loadbalancer-fd" })
     destination = "/tmp/bacula-fd.conf"
   }
+  provisioner "file" {
+    content     = templatefile("configs/haproxy.cfg", { web_host_private_ips : aws_instance.webapp_host[*].private_ip })
+    destination = "/tmp/haproxy.cfg"
+  }
   user_data = join("\n", [
     file("scripts/backup-client.sh"),
-    templatefile("scripts/loadbalancer.sh", { web_host_private_ips : aws_instance.webapp_host[*].private_ip }),
+    file("scripts/loadbalancer.sh"),
   ])
 }
 

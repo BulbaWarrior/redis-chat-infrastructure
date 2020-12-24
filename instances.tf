@@ -23,8 +23,8 @@ resource "aws_instance" "webapp_host" {
     destination = "/tmp/bacula-fd.conf"
   }
   user_data = join("\n", [
-    file("bacula-client.sh"),
-    templatefile("web.sh", { database_addr = local.database_addr, node_id = count.index + 1 }),
+    file("scripts/backup-client.sh"),
+    templatefile("scripts/web.sh", { database_addr = local.database_addr, node_id = count.index + 1 }),
   ])
 }
 
@@ -51,8 +51,8 @@ resource "aws_instance" "database_host" {
     destination = "/tmp/bacula-fd.conf"
   }
   user_data = join("\n", [
-    file("bacula-client.sh"),
-    file("databases.sh"),
+    file("scripts/backup-client.sh"),
+    file("scripts/databases.sh"),
   ])
 }
 
@@ -80,8 +80,8 @@ resource "aws_instance" "loadbalancer_host" {
     destination = "/tmp/bacula-fd.conf"
   }
   user_data = join("\n", [
-    file("bacula-client.sh"),
-    templatefile("loadbalancer.sh", { web_host_private_ips : aws_instance.webapp_host[*].private_ip }),
+    file("scripts/backup-client.sh"),
+    templatefile("scripts/loadbalancer.sh", { web_host_private_ips : aws_instance.webapp_host[*].private_ip }),
   ])
 }
 
@@ -130,7 +130,7 @@ resource "aws_instance" "backup_host" {
     content     = templatefile("configs/backups/bacula/bacula-sd.conf", { addr : self.private_ip })
     destination = "/tmp/bacula-sd.conf"
   }
-  user_data = templatefile("backup.sh", { bacula_database_pass = var.bacula_database_pass })
+  user_data = templatefile("scripts/backup-server.sh", { bacula_database_pass = var.bacula_database_pass })
 }
 
 resource "aws_instance" "cicd_host" {
@@ -157,7 +157,7 @@ resource "aws_instance" "cicd_host" {
     destination = "/tmp/bacula-fd.conf"
   }
   user_data = join("\n", [
-    file("bacula-client.sh"),
-    file("cicd.sh"),
+    file("scripts/backup-client.sh"),
+    file("scripts/cicd.sh"),
   ])
 }
